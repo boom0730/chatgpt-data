@@ -1,7 +1,7 @@
 package cn.bugstack.chatgpt.data.domain.openai.service;
 
 import cn.bugstack.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
-import cn.bugstack.chatgpt.data.types.enums.common.Constants;
+import cn.bugstack.chatgpt.data.types.common.Constants;
 import cn.bugstack.chatgpt.data.types.exception.ChatGPTException;
 import cn.bugstack.chatgpt.session.OpenAiSession;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,14 +22,13 @@ public abstract class AbstractChatService implements IChatService {
     protected OpenAiSession openAiSession;
 
     @Override
-    public ResponseBodyEmitter completions(ChatProcessAggregate chatProcess) {
+    public ResponseBodyEmitter completions(ResponseBodyEmitter emitter, ChatProcessAggregate chatProcess) {
         // 1. 校验权限
-        if (!"boom730".equals(chatProcess.getToken())) {
-            throw new ChatGPTException(Constants.ResponseCode.TOKEN_ERROR.getCode(), Constants.ResponseCode.TOKEN_ERROR.getInfo());
-        }
-
+//        if (!"boom730".equals(chatProcess.getToken())) {
+//            throw new ChatGPTException(Constants.ResponseCode.TOKEN_ERROR.getCode(), Constants.ResponseCode.TOKEN_ERROR.getInfo());
+//        }
         // 2. 请求应答
-        ResponseBodyEmitter emitter = new ResponseBodyEmitter(3 * 60 * 1000L);
+//        ResponseBodyEmitter emitter = new ResponseBodyEmitter(3 * 60 * 1000L);
         //下面者两个emitter的代码对于逻辑无用 只是日志打印
         // emitter.onCompletion :
         // 1 资源清理：在流式响应完成后，释放任何占用的资源。

@@ -1,4 +1,4 @@
-package cn.bugstack.chatgpt.data.types.enums.common;
+package cn.bugstack.chatgpt.data.types.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
