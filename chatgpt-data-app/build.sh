@@ -1,0 +1,1 @@
+docker build -f ./Dockerfile -t boom/chatgpt-data-app:1.1 .
