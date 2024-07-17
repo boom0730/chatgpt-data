@@ -39,7 +39,7 @@ public class AccessLimitFilter implements ILogicFilter {
         }
         String openid = chatProcess.getOpenid();
 
-        // 2. 访问次数判断
+        // 2. 访问次数判断 要从缓存中查询 每次使用完之后缓存次数加一
         int visitCount = visitCache.get(openid, () -> 0);
         if (visitCount < limitCount) {
             visitCache.put(openid, visitCount + 1);

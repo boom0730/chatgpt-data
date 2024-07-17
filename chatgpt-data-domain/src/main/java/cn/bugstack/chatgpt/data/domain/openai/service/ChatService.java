@@ -38,6 +38,7 @@ public class ChatService extends AbstractChatService {
 
     @Override
     protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, String... logics) throws Exception {
+        // 运用工厂打开逻辑过滤器
         Map<String, ILogicFilter> logicFilterMap = logicFactory.openLogicFilter();
         RuleLogicEntity<ChatProcessAggregate> entity = null;
         for (String code : logics) {

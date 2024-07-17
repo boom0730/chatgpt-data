@@ -33,11 +33,13 @@ public abstract class AbstractChatService implements IChatService {
             });
             emitter.onError(throwable -> log.error("流式问答请求疫情，使用模型：{}", chatProcess.getModel(), throwable));
 
-            // 2. 规则过滤
+            // 2. 规则过滤 正式使用
+            //docheck中会去 1、运用工厂打开逻辑过滤器 2、根据传入的要使用的过滤器 进行filter过滤操作 然后能够得到它给的返回值 是否被阻塞了之类的
             RuleLogicEntity<ChatProcessAggregate> ruleLogicEntity = this.doCheckLogic(chatProcess,
                     DefaultLogicFactory.LogicModel.ACCESS_LIMIT.getCode(),
                     DefaultLogicFactory.LogicModel.SENSITIVE_WORD.getCode());
-
+            //这里就是结果的信息 如果被阻塞了 返回的就不是success 的code 就直接返回
+            //如果没被阻塞 那么就会执行第三步 进行调用doMessageResponse做应答处理
             if (!LogicCheckTypeVO.SUCCESS.equals(ruleLogicEntity.getType())) {
                 emitter.send(ruleLogicEntity.getInfo());
                 emitter.complete();

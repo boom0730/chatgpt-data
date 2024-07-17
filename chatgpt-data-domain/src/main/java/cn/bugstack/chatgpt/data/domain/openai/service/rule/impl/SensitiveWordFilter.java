@@ -39,11 +39,12 @@ public class SensitiveWordFilter implements ILogicFilter {
             return RuleLogicEntity.<ChatProcessAggregate>builder()
                     .type(LogicCheckTypeVO.SUCCESS).data(chatProcess).build();
         }
-
+        //如果不是白名单 就重新创建个聚合对象
         ChatProcessAggregate newChatProcessAggregate = new ChatProcessAggregate();
         newChatProcessAggregate.setOpenid(chatProcess.getOpenid());
         newChatProcessAggregate.setModel(chatProcess.getModel());
 
+        //用的github上开源的敏感词项目SensitiveWordBs来replace这些敏感词
         List<MessageEntity> newMessages = chatProcess.getMessages().stream()
                 .map(message -> {
                     String content = message.getContent();

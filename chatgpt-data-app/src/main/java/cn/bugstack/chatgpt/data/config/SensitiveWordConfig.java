@@ -29,17 +29,17 @@ public class SensitiveWordConfig {
                         }
                     }*/
                 })
-                .ignoreCase(true)
-                .ignoreWidth(true)
-                .ignoreNumStyle(true)
-                .ignoreChineseStyle(true)
-                .ignoreEnglishStyle(true)
+                .ignoreCase(true)//忽略到大小写
+                .ignoreWidth(true)//全角半角
+                .ignoreNumStyle(true)//
+                .ignoreChineseStyle(true)//中文简繁体
+                .ignoreEnglishStyle(true)//英文大小写
                 .ignoreRepeat(false)
-                .enableNumCheck(true)
-                .enableEmailCheck(true)
-                .enableUrlCheck(true)
-                .enableWordCheck(true)
-                .numCheckLen(1024)
+                .enableNumCheck(true)//数字检查
+                .enableEmailCheck(true)//邮箱地址检测
+                .enableUrlCheck(true)//url
+                .enableWordCheck(true)//启用敏感词检查
+                .numCheckLen(1024)//数字长度检查
                 .init();
     }
 
