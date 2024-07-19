@@ -1,6 +1,7 @@
 package cn.bugstack.chatgpt.data.domain.openai.service.rule.factory;
 
 import cn.bugstack.chatgpt.data.domain.openai.annotation.LogicStrategy;
+import cn.bugstack.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import cn.bugstack.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class DefaultLogicFactory {
     //初始化map来存放两个过滤器的bean
-    public Map<String, ILogicFilter> logicFilterMap = new ConcurrentHashMap<>();
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = new ConcurrentHashMap<>();
 
     /**
      * 这里的代码一定要好生理解
@@ -34,7 +35,7 @@ public class DefaultLogicFactory {
      * 然后在初始化工厂的时候 通过传入进来的 List<ILogicFilter> logicFilters
      * 将list中的logicfilter都拿出来 然后通过AnnotationUtils.findAnnotation找注解的形式 找到与之对应的filter放到map中
      */
-    public DefaultLogicFactory(List<ILogicFilter> logicFilters) {
+    public DefaultLogicFactory(List<ILogicFilter<UserAccountQuotaEntity>> logicFilters) {
         logicFilters.forEach(logic -> {
             LogicStrategy strategy = AnnotationUtils.findAnnotation(logic.getClass(), LogicStrategy.class);
             if (null != strategy) {
@@ -43,7 +44,7 @@ public class DefaultLogicFactory {
         });
     }
 
-    public Map<String, ILogicFilter> openLogicFilter() {
+    public Map<String, ILogicFilter<UserAccountQuotaEntity>> openLogicFilter() {
         return logicFilterMap;
     }
 
@@ -52,9 +53,12 @@ public class DefaultLogicFactory {
      * 规则逻辑枚举
      */
     public enum LogicModel {
-
+        NULL("NULL", "放行不用过滤"),
         ACCESS_LIMIT("ACCESS_LIMIT", "访问次数过滤"),
         SENSITIVE_WORD("SENSITIVE_WORD", "敏感词过滤"),
+        USER_QUOTA("USER_QUOTA", "用户额度过滤"),
+        MODEL_TYPE("MODEL_TYPE", "模型可用范围过滤"),
+        ACCOUNT_STATUS("ACCOUNT_STATUS", "账户状态过滤"),
         ;
 
         private String code;

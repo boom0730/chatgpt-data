@@ -3,6 +3,7 @@ package cn.bugstack.chatgpt.data.domain.openai.service;
 import cn.bugstack.chatgpt.common.Constants;
 import cn.bugstack.chatgpt.data.domain.openai.model.aggregates.ChatProcessAggregate;
 import cn.bugstack.chatgpt.data.domain.openai.model.entity.RuleLogicEntity;
+import cn.bugstack.chatgpt.data.domain.openai.model.entity.UserAccountQuotaEntity;
 import cn.bugstack.chatgpt.data.domain.openai.model.valobj.LogicCheckTypeVO;
 import cn.bugstack.chatgpt.data.domain.openai.service.rule.ILogicFilter;
 import cn.bugstack.chatgpt.data.domain.openai.service.rule.factory.DefaultLogicFactory;
@@ -37,12 +38,15 @@ public class ChatService extends AbstractChatService {
     private DefaultLogicFactory logicFactory;
 
     @Override
-    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, String... logics) throws Exception {
-        // 运用工厂打开逻辑过滤器
-        Map<String, ILogicFilter> logicFilterMap = logicFactory.openLogicFilter();
+    protected RuleLogicEntity<ChatProcessAggregate> doCheckLogic(ChatProcessAggregate chatProcess, UserAccountQuotaEntity userAccountQuotaEntity, String... logics) throws Exception {
+        // 开启过滤器map 这里就自动注入过滤器了
+        Map<String, ILogicFilter<UserAccountQuotaEntity>> logicFilterMap = logicFactory.openLogicFilter();
+        // RuleLogicEntity<ChatProcessAggregate> entit 来接收最后的结果
         RuleLogicEntity<ChatProcessAggregate> entity = null;
         for (String code : logics) {
-            entity = logicFilterMap.get(code).filter(chatProcess);
+            if (DefaultLogicFactory.LogicModel.NULL.getCode().equals(code)) continue;
+            //真正调用 filter 去过滤
+            entity = logicFilterMap.get(code).filter(chatProcess, userAccountQuotaEntity);
             if (!LogicCheckTypeVO.SUCCESS.equals(entity.getType())) return entity;
         }
         return entity != null ? entity : RuleLogicEntity.<ChatProcessAggregate>builder()
@@ -92,7 +96,6 @@ public class ChatService extends AbstractChatService {
                         throw new ChatGPTException(e.getMessage());
                     }
                 }
-
             }
         });
     }
