@@ -24,6 +24,8 @@ services:
       - WX_CONFIG_TOKEN=boom730
     volumes:
       - ./log:/data/log
+    networks:
+      - my-network
     logging:
       driver: "json-file"
       options:
@@ -36,7 +38,9 @@ services:
     image: boom0730/chatgpt-web:1.4
     ports:
       - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_HOST_URL=http://116.198.244.169:80
+    networks:
+      - my-network
     restart: always
-
+networks:
+  my-network:
+    driver: bridge
