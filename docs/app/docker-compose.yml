@@ -39,6 +39,4 @@ services:
     environment:
       - NEXT_PUBLIC_API_HOST_URL=http://116.198.244.169:80
     restart: always
-networks:
-  my-network:
-    driver: bridge
+
