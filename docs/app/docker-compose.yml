@@ -9,7 +9,7 @@ services:
       - "80:80"
     environment:
       - TZ=PRC
-      - SERVER_PORT=8091
+      - SERVER_PORT=80
       - APP_CONFIG_API_VERSION=v1
       - APP_CONFIG_CROSS_ORIGIN=*
       - THREAD_POOL_EXECUTOR_CONFIG_CORE_POOL_SIZE=20
