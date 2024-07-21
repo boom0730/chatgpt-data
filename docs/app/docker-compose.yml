@@ -1,12 +1,12 @@
 # /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose.yml up -d
 version: '3.8'
-# docker-compose -f environment-docker-compose.yml up -d
+# docker-compose -f docker-compose.yml up -d
 services:
   chatgpt-data-app:
-    image: boom/chatgpt-data-app:1.1
+    image: boom0730/chatgpt-data-app:1.3
     container_name: chatgpt-data-app
     ports:
-      - "8091:8091"
+      - "80:80"
     environment:
       - TZ=PRC
       - SERVER_PORT=8091
@@ -18,10 +18,10 @@ services:
       - THREAD_POOL_EXECUTOR_CONFIG_BLOCK_QUEUE_SIZE=5000
       - THREAD_POOL_EXECUTOR_CONFIG_POLICY=CallerRunsPolicy
       - CHATGPT_SDK_CONFIG_API_HOST=https://pro-share-api.zcyai.com/
-      - CHATGPT_SDK_CONFIG_API_KEY=sk-PmMVgo7VKyJSBMAPCb4037F53bE84c6b9106Dc939971Ea9b
-      - WX_CONFIG_ORIGINALID=gh_c5ce6e4a0e0e
-      - WX_CONFIG_APPID=wxad979c0307864a66
-      - WX_CONFIG_TOKEN=b8b6
+      - CHATGPT_SDK_CONFIG_API_KEY=sk-6tgWbt69i4PgYtAh546dE3251c35411d93A375D40c76F644
+      - WX_CONFIG_ORIGINALID=gh_737a9f749590
+      - WX_CONFIG_APPID=wxdc6c10561cbf6dc5
+      - WX_CONFIG_TOKEN=boom730
     volumes:
       - ./log:/data/log
     logging:
@@ -33,9 +33,10 @@ services:
 
   chatgpt-web:
     container_name: chatgpt-web
-    image: boom0730/chatgpt-web:1.0
+    image: boom0730/chatgpt-web:1.3
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_HOST_URL=http://localhost:8091
+      - NEXT_PUBLIC_API_HOST_URL=http://116.198.244.169:80
     restart: always
+
